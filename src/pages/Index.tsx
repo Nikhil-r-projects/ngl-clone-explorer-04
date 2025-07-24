@@ -7,12 +7,14 @@ import { MessageSquare, Copy, Share2, Settings, Inbox } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from '@supabase/supabase-js';
+import ShareFlow from "@/components/ShareFlow";
 
 const Index = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [messageCount, setMessageCount] = useState(0);
+  const [isShareFlowOpen, setIsShareFlowOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -97,22 +99,8 @@ const Index = () => {
     });
   };
 
-  const shareLink = async () => {
-    const link = `${window.location.origin}/send/${userProfile?.username || user?.id}`;
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Send me anonymous messages!',
-          text: 'Ask me anything anonymously',
-          url: link
-        });
-      } catch (error) {
-        console.log('Share cancelled');
-      }
-    } else {
-      copyLink();
-    }
+  const shareLink = () => {
+    setIsShareFlowOpen(true);
   };
 
   const signOut = async () => {
@@ -219,6 +207,13 @@ const Index = () => {
           </Card>
         </div>
       </div>
+
+      <ShareFlow
+        isOpen={isShareFlowOpen}
+        onClose={() => setIsShareFlowOpen(false)}
+        userLink={profileLink}
+        username={userProfile?.username || user?.id}
+      />
     </div>
   );
 };
