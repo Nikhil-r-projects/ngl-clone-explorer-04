@@ -148,63 +148,71 @@ const Index = () => {
         </div>
 
         <div className="w-full max-w-sm space-y-6">
-          {/* Logo */}
-          <div className="text-center mb-6">
-            <span className="text-3xl">🎲</span>
-            <h1 className="text-2xl font-bold text-white mt-2">NGL</h1>
-            <p className="text-white/80 text-sm">anonymous q&a</p>
+          {/* Header Navigation */}
+          <div className="flex items-center justify-center gap-8 mb-8">
+            <Button variant="ghost" className="text-white/60 hover:text-white">
+              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-2">
+                <span className="text-white text-xs">👁</span>
+              </div>
+            </Button>
+            <h1 className="text-xl font-bold text-white">PLAY</h1>
+            <h1 className="text-xl font-bold text-white/40">INBOX</h1>
+            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+            <Button variant="ghost" className="text-white/60 hover:text-white">
+              <Settings className="w-6 h-6" />
+            </Button>
           </div>
 
-          {/* Profile Card */}
-          <Card className="bg-white border-0 shadow-card rounded-3xl p-6 text-center">
-            <div className="w-20 h-20 bg-gradient-ngl rounded-full mx-auto mb-4 flex items-center justify-center">
-              <MessageSquare className="w-8 h-8 text-white" />
+          {/* Story Template Preview */}
+          <div className="bg-gradient-to-br from-amber-900 to-amber-700 rounded-3xl p-8 text-center relative">
+            <div className="w-16 h-16 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <div className="w-12 h-12 bg-white/30 rounded-full flex items-center justify-center">
+                <MessageSquare className="w-6 h-6 text-white" />
+              </div>
             </div>
-            <h2 className="text-xl font-medium text-black mb-2">
-              @{userProfile.username}
+            <h2 className="text-white text-xl font-bold mb-2">
+              send me anonymous<br />messages!
             </h2>
-            <p className="text-gray-600 text-sm mb-4">
-              send me anonymous messages!
-            </p>
-            <Badge className="bg-yellow-badge text-black text-sm px-3 py-1 rounded-full">
-              {messageCount} messages received
-            </Badge>
-          </Card>
+            <div className="absolute bottom-4 right-4 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs">🎲</span>
+            </div>
+            {/* Dots indicator */}
+            <div className="flex justify-center gap-2 mt-4">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-white/30 rounded-full"></div>
+              <div className="w-2 h-2 bg-white/30 rounded-full"></div>
+            </div>
+          </div>
 
-          {/* Share Section */}
-          <Card className="bg-white border-0 shadow-card rounded-3xl p-6">
-            <h3 className="text-lg font-medium text-black mb-4 text-center">
+          {/* Step 1: Copy Link */}
+          <div className="text-center space-y-4">
+            <h3 className="text-xl font-bold text-black">
               Step 1: Copy your link
             </h3>
-            <div className="bg-text-area rounded-2xl p-3 mb-4">
-              <p className="text-gray-600 text-sm break-all">
-                {profileLink}
-              </p>
-            </div>
+            <p className="text-gray-500 text-sm">
+              NGL.LINK/{userProfile?.username?.toUpperCase() || user?.id?.slice(0, 8).toUpperCase()}
+            </p>
             <Button 
               onClick={copyLink}
               variant="outline"
-              className="w-full py-3 text-base font-medium rounded-2xl border-2 border-primary text-primary hover:bg-primary hover:text-white"
+              className="px-8 py-3 text-base font-medium rounded-full border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white"
             >
-              <Copy className="w-4 h-4 mr-2" />
-              Copy Link
+              📎 copy link
             </Button>
-          </Card>
+          </div>
 
-          {/* Share Button */}
-          <Card className="bg-white border-0 shadow-card rounded-3xl p-6">
-            <h3 className="text-lg font-medium text-black mb-4 text-center">
+          {/* Step 2: Share Button */}
+          <div className="text-center space-y-4">
+            <h3 className="text-xl font-bold text-black">
               Step 2: Share link on your story
             </h3>
             <Button 
               onClick={shareLink}
-              variant="ngl"
-              className="w-full py-3 text-base font-medium bg-gradient-to-r from-pink-500 to-orange-500 hover:opacity-90"
+              className="w-full py-4 text-xl font-bold bg-gradient-to-r from-pink-500 to-orange-500 hover:opacity-90 rounded-full text-white"
             >
-              <Share2 className="w-4 h-4 mr-2" />
               Share!
             </Button>
-          </Card>
+          </div>
         </div>
       </div>
 

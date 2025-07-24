@@ -108,9 +108,25 @@ const ShareFlow = ({ isOpen, onClose, userLink, username }: ShareFlowProps) => {
             
             {/* Mock phone interface for each step */}
             <div className="bg-gray-100 rounded-2xl p-4 mb-4 min-h-[300px] flex items-center justify-center">
-              <div className="text-gray-500 text-sm">
-                {steps[currentStep - 1].instruction}
-              </div>
+              {currentStep === 4 ? (
+                <div className="bg-gradient-to-br from-amber-900 to-amber-700 rounded-3xl p-6 text-center relative w-full max-w-[250px]">
+                  <div className="w-12 h-12 bg-white/20 rounded-full mx-auto mb-3 flex items-center justify-center">
+                    <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs">💬</span>
+                    </div>
+                  </div>
+                  <h2 className="text-white text-lg font-bold mb-2">
+                    send me anonymous<br />messages!
+                  </h2>
+                  <div className="absolute bottom-3 right-3 w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">🎲</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-gray-500 text-sm text-center">
+                  {steps[currentStep - 1].instruction}
+                </div>
+              )}
             </div>
             
             <p className="text-gray-600 text-sm">
