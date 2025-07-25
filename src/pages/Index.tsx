@@ -24,10 +24,6 @@ const Index = () => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
-        if (!session?.user) {
-          navigate("/auth");
-        }
       }
     );
 
@@ -35,14 +31,10 @@ const Index = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
-      if (!session?.user) {
-        navigate("/auth");
-      }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -91,7 +83,7 @@ const Index = () => {
   };
 
   const copyLink = () => {
-    const link = `${window.location.origin}/send/${userProfile?.username || user?.id}`;
+    const link = `${window.location.origin}/${userProfile?.username || user?.id}`;
     navigator.clipboard.writeText(link);
     toast({
       title: "Link copied! 📋",
@@ -122,7 +114,7 @@ const Index = () => {
     );
   }
 
-  const profileLink = `${window.location.origin}/send/${userProfile?.username || user?.id}`;
+  const profileLink = `${window.location.origin}/${userProfile?.username || user?.id}`;
 
   return (
     <div className="min-h-screen bg-black/80 relative overflow-hidden font-sans flex items-center justify-center">

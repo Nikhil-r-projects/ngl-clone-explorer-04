@@ -6,9 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Inbox from "./pages/Inbox";
+import InboxPage from "./pages/InboxPage";
 import SendMessage from "./pages/SendMessage";
 import UserPage from "./pages/UserPage";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -19,9 +21,22 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/inbox" element={<Inbox />} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Index />
+            </ProtectedRoute>
+          } />
+          <Route path="/inbox" element={
+            <ProtectedRoute>
+              <InboxPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/inbox/:username" element={
+            <ProtectedRoute>
+              <InboxPage />
+            </ProtectedRoute>
+          } />
           <Route path="/send/:username" element={<SendMessage />} />
           <Route path="/u/:username" element={<UserPage />} />
           <Route path="/:username" element={<UserPage />} />
