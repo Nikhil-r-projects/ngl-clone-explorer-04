@@ -159,73 +159,60 @@ const UserPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-500 via-red-500 to-orange-500 flex flex-col">
-      {/* Status Bar */}
-      <div className="flex justify-between items-center px-6 py-2 text-white text-sm">
-        <span>8:58 PM</span>
-        <div className="flex items-center gap-1">
-          <span className="text-xs">📶</span>
-          <span className="text-xs">📶</span>
-          <span className="text-xs">🔋</span>
-          <span className="text-xs bg-white text-black px-1 rounded">81</span>
+    <div className="min-h-screen bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400 flex items-center justify-center p-4">
+      <div className="w-full max-w-md mx-auto space-y-6">
+        {/* Header */}
+        <div className="text-center space-y-2">
+          <h1 className="text-white text-2xl font-bold">
+            Send a message to {username}
+          </h1>
         </div>
-      </div>
 
-      {/* URL Bar */}
-      <div className="px-4 py-2">
-        <div className="bg-gray-800 rounded-full px-4 py-2 text-white text-sm flex items-center gap-2">
-          <span>🏠</span>
-          <span>🔀</span>
-          <span className="flex-1">ngl.link/{username}</span>
-          <span>➕</span>
-          <span className="bg-white text-black rounded px-2">10</span>
-          <span>⋮</span>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6 space-y-6">
         {/* Profile Card */}
-        <Card className="bg-white/95 backdrop-blur-sm border-0 rounded-3xl p-4 w-full max-w-sm">
-          <div className="flex items-center gap-3">
-            <Avatar className="w-12 h-12">
+        <Card className="bg-white/95 backdrop-blur-sm border-0 rounded-3xl p-6 shadow-xl">
+          <div className="flex items-center gap-4">
+            <Avatar className="w-16 h-16 ring-4 ring-white/20">
               <AvatarImage src={recipientUser.avatar_url} alt={username} />
-              <AvatarFallback className="bg-gray-300 text-gray-600">
+              <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-400 text-white text-lg font-bold">
                 {username?.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div>
-              <div className="font-semibold text-black">@{username}</div>
-              <div className="text-sm text-gray-600">send me anonymous messages!</div>
+            <div className="flex-1">
+              <div className="font-bold text-black text-lg">@{username}</div>
+              <div className="text-gray-600 text-sm">Send me anonymous messages!</div>
             </div>
           </div>
         </Card>
 
         {/* Message Input */}
-        <Card className="bg-white/90 backdrop-blur-sm border-0 rounded-3xl p-4 w-full max-w-sm">
+        <Card className="bg-white/95 backdrop-blur-sm border-0 rounded-3xl p-6 shadow-xl">
           <div className="relative">
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-              className="min-h-[120px] border-0 bg-pink-100/50 resize-none text-gray-700 placeholder:text-gray-500 focus-visible:ring-0 focus-visible:outline-none rounded-2xl p-4 text-base"
+              placeholder="Type your anonymous message..."
+              className="min-h-[140px] border-0 bg-gray-50/80 resize-none text-gray-800 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-0 rounded-2xl p-4 text-base font-medium shadow-inner"
               maxLength={300}
             />
             <Button
               variant="ghost"
               size="sm"
               onClick={getRandomPrompt}
-              className="absolute bottom-3 right-3 text-gray-500 hover:text-gray-700 p-1 h-8 w-8 text-lg"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl hover:scale-110 transition-transform duration-200 bg-white/80 hover:bg-white rounded-full w-12 h-12 shadow-lg"
+              title="Get random prompt"
             >
               🎲
             </Button>
+            <div className="absolute bottom-3 right-3 text-xs text-gray-400">
+              {message.length}/300
+            </div>
           </div>
         </Card>
 
         {/* Anonymous Badge */}
         <div className="flex items-center justify-center">
-          <span className="text-yellow-300 bg-yellow-300/20 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
-            🔒 anonymous q&a
+          <span className="text-white bg-white/20 px-6 py-3 rounded-full text-sm font-semibold backdrop-blur-sm border border-white/30">
+            🔒 100% Anonymous
           </span>
         </div>
 
@@ -233,28 +220,29 @@ const UserPage = () => {
         <Button 
           onClick={handleSend}
           disabled={!message.trim()}
-          className="w-full max-w-sm bg-black text-white py-4 text-lg font-semibold rounded-full hover:bg-gray-800 disabled:opacity-50"
+          className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white py-4 text-lg font-bold rounded-full shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Send!
+          Send Message ✨
         </Button>
 
         {/* Stats */}
-        <div className="text-center text-yellow-300 text-lg mt-8">
-          👇 {friendCount} friends just tapped the button 👇
+        <div className="text-center text-white/90 text-base font-medium">
+          💌 {friendCount} messages sent today
         </div>
 
         {/* Get Own Link Button */}
         <Button
           onClick={() => navigate("/")}
-          className="bg-black text-white px-8 py-4 rounded-full hover:bg-gray-800 text-lg font-semibold w-full max-w-sm"
+          className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 py-3 text-base font-semibold rounded-full backdrop-blur-sm transition-all duration-200"
+          variant="outline"
         >
           Get your own messages!
         </Button>
 
         {/* Footer Links */}
-        <div className="flex gap-6 text-white/75 text-sm mt-4">
-          <span>Terms</span>
-          <span>Privacy</span>
+        <div className="flex justify-center gap-8 text-white/60 text-sm mt-6">
+          <span className="hover:text-white cursor-pointer transition-colors">Terms</span>
+          <span className="hover:text-white cursor-pointer transition-colors">Privacy</span>
         </div>
       </div>
     </div>

@@ -24,6 +24,7 @@ const App = () => (
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/send/:username" element={<SendMessage />} />
           <Route path="/u/:username" element={<UserPage />} />
+          <Route path="/:username" element={<UserPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
