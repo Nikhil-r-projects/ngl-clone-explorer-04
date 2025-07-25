@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Inbox from "./pages/Inbox";
 import SendMessage from "./pages/SendMessage";
+import UserPage from "./pages/UserPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/send/:username" element={<SendMessage />} />
+          <Route path="/u/:username" element={<UserPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
