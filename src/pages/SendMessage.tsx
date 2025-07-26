@@ -6,6 +6,7 @@ import { StatsSection } from "@/components/StatsSection";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { User, Session } from '@supabase/supabase-js';
 
 const SendMessage = () => {
   const { username } = useParams();
@@ -13,11 +14,29 @@ const SendMessage = () => {
   const [recipientUser, setRecipientUser] = useState<any>(null);
   const [messageCount, setMessageCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+      }
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+    });
+
     if (username) {
       fetchRecipientUser();
     }
+
+    return () => subscription.unsubscribe();
   }, [username]);
 
   const fetchRecipientUser = async () => {
@@ -53,14 +72,30 @@ const SendMessage = () => {
   };
 
   const handleSendMessage = async (message: string) => {
+    // Check if user is authenticated
+    if (!user || !session) {
+      // Store intended route for redirect after login
+      localStorage.setItem('redirectAfterLogin', window.location.pathname);
+      navigate("/auth");
+      return;
+    }
+
     if (!recipientUser) return;
     
     try {
+      // Get the authenticated user's profile to get their username
+      const { data: senderProfile } = await supabase
+        .from('users')
+        .select('username')
+        .eq('id', user.id)
+        .single();
+
       const { error } = await supabase
         .from('messages')
         .insert({
           content: message,
-          recipient_id: recipientUser.id
+          recipient_id: recipientUser.id,
+          sender_username: senderProfile?.username || null
         });
 
       if (error) {

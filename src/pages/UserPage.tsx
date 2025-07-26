@@ -107,12 +107,19 @@ const UserPage = () => {
     if (!message.trim() || !recipientUser) return;
     
     try {
+      // Get the authenticated user's profile to get their username
+      const { data: senderProfile } = await supabase
+        .from('users')
+        .select('username')
+        .eq('id', user.id)
+        .single();
+
       const { error } = await supabase
         .from('messages')
         .insert({
           content: message,
           recipient_id: recipientUser.id,
-          sender_username: senderUsername || null
+          sender_username: senderProfile?.username || null
         });
 
       if (error) {
