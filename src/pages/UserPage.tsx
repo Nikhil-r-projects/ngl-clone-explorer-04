@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { User, Session } from '@supabase/supabase-js';
 
 const prompts = [
   "how tall r u",
@@ -32,11 +33,29 @@ const UserPage = () => {
   const [showThankYou, setShowThankYou] = useState(false);
   const [friendCount, setFriendCount] = useState(305);
   const [senderUsername, setSenderUsername] = useState("");
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+      }
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+    });
+
     if (username) {
       fetchRecipientUser();
     }
+
+    return () => subscription.unsubscribe();
   }, [username]);
 
   const fetchRecipientUser = async () => {
@@ -77,6 +96,14 @@ const UserPage = () => {
   };
 
   const handleSend = async () => {
+    // Check if user is authenticated
+    if (!user || !session) {
+      // Store intended route for redirect after login
+      localStorage.setItem('redirectAfterLogin', window.location.pathname);
+      navigate("/auth");
+      return;
+    }
+
     if (!message.trim() || !recipientUser) return;
     
     try {
@@ -105,6 +132,19 @@ const UserPage = () => {
     } catch (error) {
       console.error('Error:', error);
     }
+  };
+
+  const handleGetOwnLink = () => {
+    // Check if user is authenticated
+    if (!user || !session) {
+      // Store intended route for redirect after login
+      localStorage.setItem('redirectAfterLogin', '/inbox');
+      navigate("/auth");
+      return;
+    }
+    
+    // If authenticated, go to inbox
+    navigate("/inbox");
   };
 
   if (loading) {
@@ -146,7 +186,7 @@ const UserPage = () => {
             </div>
             
             <Button
-              onClick={() => navigate("/")}
+              onClick={handleGetOwnLink}
               className="bg-black text-white px-8 py-4 rounded-full hover:bg-gray-800 text-lg font-semibold w-full max-w-sm"
             >
               Get your own messages!
@@ -247,7 +287,7 @@ const UserPage = () => {
 
         {/* Get Own Link Button */}
         <Button
-          onClick={() => navigate("/")}
+          onClick={handleGetOwnLink}
           className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 py-3 text-base font-semibold rounded-full backdrop-blur-sm transition-all duration-200"
           variant="outline"
         >
