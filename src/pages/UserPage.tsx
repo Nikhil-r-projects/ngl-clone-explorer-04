@@ -42,6 +42,14 @@ const UserPage = () => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        
+        // If user logs in and we have a stored redirect, handle it
+        if (session?.user && localStorage.getItem('redirectAfterLogin')) {
+          const redirectPath = localStorage.getItem('redirectAfterLogin');
+          if (redirectPath === window.location.pathname) {
+            localStorage.removeItem('redirectAfterLogin');
+          }
+        }
       }
     );
 
@@ -49,6 +57,13 @@ const UserPage = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      
+      // If no session, redirect to auth immediately
+      if (!session?.user) {
+        localStorage.setItem('redirectAfterLogin', window.location.pathname);
+        navigate("/auth");
+        return;
+      }
     });
 
     if (username) {
@@ -56,7 +71,7 @@ const UserPage = () => {
     }
 
     return () => subscription.unsubscribe();
-  }, [username]);
+  }, [username, navigate]);
 
   const fetchRecipientUser = async () => {
     if (!username) return;
