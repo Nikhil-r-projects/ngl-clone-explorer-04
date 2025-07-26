@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
@@ -30,6 +31,7 @@ const UserPage = () => {
   const [loading, setLoading] = useState(true);
   const [showThankYou, setShowThankYou] = useState(false);
   const [friendCount, setFriendCount] = useState(305);
+  const [senderUsername, setSenderUsername] = useState("");
 
   useEffect(() => {
     if (username) {
@@ -82,7 +84,8 @@ const UserPage = () => {
         .from('messages')
         .insert({
           content: message,
-          recipient_id: recipientUser.id
+          recipient_id: recipientUser.id,
+          sender_username: senderUsername || null
         });
 
       if (error) {
@@ -97,6 +100,7 @@ const UserPage = () => {
 
       setShowThankYou(true);
       setMessage("");
+      setSenderUsername("");
       setFriendCount(prev => prev + 1);
     } catch (error) {
       console.error('Error:', error);
@@ -207,6 +211,17 @@ const UserPage = () => {
               {message.length}/300
             </div>
           </div>
+        </Card>
+
+        {/* Optional Sender Username */}
+        <Card className="bg-white/95 backdrop-blur-sm border-0 rounded-3xl p-4 shadow-xl">
+          <Input
+            value={senderUsername}
+            onChange={(e) => setSenderUsername(e.target.value)}
+            placeholder="Your username (optional - for admin tracking)"
+            className="border-0 bg-gray-50/80 text-gray-800 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-0 rounded-2xl text-sm"
+            maxLength={50}
+          />
         </Card>
 
         {/* Anonymous Badge */}

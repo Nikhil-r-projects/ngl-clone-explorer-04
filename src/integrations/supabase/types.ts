@@ -21,6 +21,7 @@ export type Database = {
           id: string
           is_read: boolean | null
           recipient_id: string
+          sender_username: string | null
         }
         Insert: {
           content: string
@@ -28,6 +29,7 @@ export type Database = {
           id?: string
           is_read?: boolean | null
           recipient_id: string
+          sender_username?: string | null
         }
         Update: {
           content?: string
@@ -35,6 +37,7 @@ export type Database = {
           id?: string
           is_read?: boolean | null
           recipient_id?: string
+          sender_username?: string | null
         }
         Relationships: [
           {
