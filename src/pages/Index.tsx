@@ -165,7 +165,13 @@ const Index = () => {
                     </div>
                   </Button>
                   <h1 className="text-xl font-bold text-white">PLAY</h1>
-                  <h1 className="text-xl font-bold text-white/40">INBOX</h1>
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => navigate("/inbox")}
+                    className="text-xl font-bold text-white/40 hover:text-white p-0 h-auto"
+                  >
+                    INBOX
+                  </Button>
                   <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                   <Button variant="ghost" className="text-white/60 hover:text-white">
                     <Settings className="w-6 h-6" />

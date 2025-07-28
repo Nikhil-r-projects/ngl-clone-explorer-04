@@ -160,13 +160,13 @@ const UserPage = () => {
     // Check if user is authenticated
     if (!user || !session) {
       // Store intended route for redirect after login
-      localStorage.setItem('redirectAfterLogin', '/inbox');
+      localStorage.setItem('redirectAfterLogin', '/');
       navigate("/auth");
       return;
     }
     
-    // If authenticated, go to inbox
-    navigate("/inbox");
+    // If authenticated, go to homepage (Play page)
+    navigate("/");
   };
 
   if (loading) {
