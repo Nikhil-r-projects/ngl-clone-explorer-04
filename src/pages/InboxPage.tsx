@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Heart, MessageCircle, MoreVertical } from "lucide-react";
+import { Eye, Heart, ChevronRight, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from '@supabase/supabase-js';
@@ -140,30 +140,33 @@ const InboxPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400">
-      {/* Header */}
-      <div className="bg-white/10 backdrop-blur-sm border-b border-white/20">
-        <div className="flex items-center justify-between p-4">
+    <div className="min-h-screen bg-white">
+      {/* Top Navigation */}
+      <div className="flex items-center justify-center p-4 bg-white border-b border-gray-100">
+        <div className="flex items-center gap-8">
           <Button
             variant="ghost"
-            size="sm"
             onClick={() => navigate("/")}
-            className="text-white hover:bg-white/20 rounded-full p-2"
+            className="flex flex-col items-center gap-1 p-2 hover:bg-transparent"
           >
-            <ArrowLeft className="w-6 h-6" />
+            <Eye className="w-6 h-6 text-gray-400" />
+            <span className="text-xs text-gray-400">Play</span>
           </Button>
           
-          <div className="text-center">
-            <h1 className="text-white text-xl font-bold">Inbox</h1>
-            <p className="text-white/80 text-sm">{messages.length} messages</p>
-          </div>
+          <Button
+            variant="ghost"
+            className="flex flex-col items-center gap-1 p-2 hover:bg-transparent"
+          >
+            <div className="w-6 h-6 bg-red-500 rounded-full"></div>
+            <span className="text-xs text-red-500 font-medium">Inbox</span>
+          </Button>
           
           <Button
             variant="ghost"
-            size="sm"
-            className="text-white hover:bg-white/20 rounded-full p-2"
+            className="flex flex-col items-center gap-1 p-2 hover:bg-transparent"
           >
-            <MoreVertical className="w-6 h-6" />
+            <Settings className="w-6 h-6 text-gray-400" />
+            <span className="text-xs text-gray-400">Settings</span>
           </Button>
         </div>
       </div>
@@ -173,11 +176,11 @@ const InboxPage = () => {
         {messages.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">💌</div>
-            <h2 className="text-white text-xl font-bold mb-2">No messages yet</h2>
-            <p className="text-white/80 mb-6">Share your link to start receiving anonymous messages!</p>
+            <h2 className="text-gray-800 text-xl font-bold mb-2">No messages yet</h2>
+            <p className="text-gray-600 mb-6">Share your link to start receiving anonymous messages!</p>
             <Button
               onClick={() => navigate("/")}
-              className="bg-white text-purple-600 px-8 py-3 rounded-full hover:bg-gray-100"
+              className="bg-red-500 text-white px-8 py-3 rounded-full hover:bg-red-600"
             >
               Share Your Link
             </Button>
@@ -186,54 +189,31 @@ const InboxPage = () => {
           messages.map((message) => (
             <Card 
               key={message.id}
-              className="bg-white/95 backdrop-blur-sm border-0 rounded-2xl p-4 cursor-pointer hover:bg-white transition-all duration-200 shadow-lg"
+              className="bg-white border border-gray-100 rounded-xl p-4 cursor-pointer hover:shadow-md transition-all duration-200"
               onClick={() => handleMessageClick(message)}
             >
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-400 rounded-full flex items-center justify-center">
-                    <span className="text-white text-lg">👤</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Heart className="w-6 h-6 text-red-500" />
+                  <div>
+                    <h3 className="font-bold text-gray-800">New Message!</h3>
+                    <p className="text-sm text-gray-500">
+                      {formatTimeAgo(message.created_at)}
+                    </p>
                   </div>
                 </div>
-                
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-600">Anonymous</span>
-                    <div className="flex items-center gap-2">
-                      {!message.is_read && (
-                        <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                      )}
-                      <span className="text-xs text-gray-400">
-                        {formatTimeAgo(message.created_at)}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <p className="text-gray-800 text-sm leading-relaxed line-clamp-2">
-                    {message.content}
-                  </p>
-                  
-                  <div className="flex items-center gap-4 mt-3">
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      className="text-gray-500 hover:text-pink-600 p-1"
-                    >
-                      <Heart className="w-4 h-4" />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      className="text-gray-500 hover:text-purple-600 p-1"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
+                <ChevronRight className="w-5 h-5 text-gray-400" />
               </div>
             </Card>
           ))
         )}
+      </div>
+
+      {/* Bottom Button */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2">
+        <Button className="bg-red-500 text-white px-6 py-3 rounded-full hover:bg-red-600 shadow-lg">
+          Who sent these?
+        </Button>
       </div>
 
       {/* Reply Modal */}

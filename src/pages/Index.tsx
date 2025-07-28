@@ -168,7 +168,7 @@ const Index = () => {
                   <Button 
                     variant="ghost" 
                     onClick={() => navigate("/inbox")}
-                    className="text-xl font-bold text-white/40 hover:text-white p-0 h-auto"
+                    className="text-xl font-bold text-white/40 hover:text-white/80 p-0 h-auto"
                   >
                     INBOX
                   </Button>
