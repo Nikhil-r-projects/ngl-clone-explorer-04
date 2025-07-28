@@ -140,39 +140,29 @@ const InboxPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Top Navigation */}
-      <div className="flex items-center justify-center p-4 bg-white border-b border-gray-100">
-        <div className="flex items-center gap-8">
-          <Button
-            variant="ghost"
+      <div className="flex items-center justify-between px-6 py-4 bg-white">
+        <Eye className="w-6 h-6 text-gray-600" />
+        
+        <div className="flex items-center gap-6">
+          <button 
             onClick={() => navigate("/")}
-            className="flex flex-col items-center gap-1 p-2 hover:bg-transparent"
+            className="text-base font-semibold text-gray-600"
           >
-            <Eye className="w-6 h-6 text-gray-400" />
-            <span className="text-xs text-gray-400">Play</span>
-          </Button>
-          
-          <Button
-            variant="ghost"
-            className="flex flex-col items-center gap-1 p-2 hover:bg-transparent"
-          >
-            <div className="w-6 h-6 bg-red-500 rounded-full"></div>
-            <span className="text-xs text-red-500 font-medium">Inbox</span>
-          </Button>
-          
-          <Button
-            variant="ghost"
-            className="flex flex-col items-center gap-1 p-2 hover:bg-transparent"
-          >
-            <Settings className="w-6 h-6 text-gray-400" />
-            <span className="text-xs text-gray-400">Settings</span>
-          </Button>
+            PLAY
+          </button>
+          <div className="flex items-center gap-2">
+            <span className="text-base font-bold text-black">INBOX</span>
+            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+          </div>
         </div>
+        
+        <Settings className="w-6 h-6 text-gray-600" />
       </div>
 
       {/* Messages List */}
-      <div className="p-4 space-y-3">
+      <div className="px-4 py-6 space-y-2">
         {messages.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">💌</div>
@@ -187,31 +177,31 @@ const InboxPage = () => {
           </div>
         ) : (
           messages.map((message) => (
-            <Card 
+            <div 
               key={message.id}
-              className="bg-white border border-gray-100 rounded-xl p-4 cursor-pointer hover:shadow-md transition-all duration-200"
+              className="bg-white rounded-xl p-4 cursor-pointer hover:shadow-sm transition-all duration-200 flex items-center justify-between"
               onClick={() => handleMessageClick(message)}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Heart className="w-6 h-6 text-red-500" />
-                  <div>
-                    <h3 className="font-bold text-gray-800">New Message!</h3>
-                    <p className="text-sm text-gray-500">
-                      {formatTimeAgo(message.created_at)}
-                    </p>
-                  </div>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                  <Heart className="w-6 h-6 text-red-500 fill-current" />
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
+                <div>
+                  <h3 className="text-base font-bold text-red-500">New Message!</h3>
+                  <p className="text-sm text-gray-500">
+                    {formatTimeAgo(message.created_at)}
+                  </p>
+                </div>
               </div>
-            </Card>
+              <ChevronRight className="w-5 h-5 text-gray-400" />
+            </div>
           ))
         )}
       </div>
 
       {/* Bottom Button */}
-      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2">
-        <Button className="bg-red-500 text-white px-6 py-3 rounded-full hover:bg-red-600 shadow-lg">
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 px-4">
+        <Button className="w-80 h-12 bg-red-500 text-white text-base font-bold rounded-full hover:bg-red-600 shadow-lg">
           Who sent these?
         </Button>
       </div>
