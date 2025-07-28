@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Copy, Share2, Settings, Inbox } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MessageSquare, Copy, Share2, Settings, Inbox, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from '@supabase/supabase-js';
@@ -117,120 +118,79 @@ const Index = () => {
   const profileLink = `${window.location.origin}/${userProfile?.username || user?.id}`;
 
   return (
-    <div className="min-h-screen bg-black/80 relative overflow-hidden font-sans flex items-center justify-center">
-      {/* Phone Container */}
-      <div className="relative w-full max-w-sm mx-auto">
-        {/* Phone Frame */}
-        <div className="relative bg-gray-900 rounded-[3rem] p-2 shadow-2xl">
-          {/* Screen */}
-          <div className="bg-gradient-ngl rounded-[2.5rem] overflow-hidden" style={{ aspectRatio: '9/19.5' }}>
-            {/* Status Bar */}
-            <div className="flex justify-between items-center px-6 py-2 text-white text-sm">
-              <span>9:41</span>
-              <div className="flex gap-1">
-                <div className="w-4 h-2 border border-white rounded-sm">
-                  <div className="w-2 h-1 bg-white rounded-sm m-0.5"></div>
-                </div>
-              </div>
-            </div>
+    <div className="min-h-screen bg-gray-50 max-w-md mx-auto">
+      {/* Top Navigation */}
+      <div className="flex items-center justify-between px-6 py-4 bg-white">
+        <Eye className="w-6 h-6 text-gray-600" />
+        
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <span className="text-base font-bold text-black">PLAY</span>
+          </div>
+          <button 
+            onClick={() => navigate("/inbox")}
+            className="text-base font-semibold text-gray-600"
+          >
+            INBOX
+          </button>
+        </div>
+        
+        <Settings className="w-6 h-6 text-gray-600" />
+      </div>
 
-            {/* Content Area */}
-            <div className="relative z-10 flex flex-col h-full p-4 pb-6">
-              {/* Header */}
-              <div className="fixed top-16 right-6 flex gap-2 z-20">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => navigate("/inbox")}
-                  className="text-white hover:bg-white/20 rounded-full p-2"
-                >
-                  <Inbox className="w-5 h-5" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={signOut}
-                  className="text-white hover:bg-white/20 rounded-full p-2"
-                >
-                  <Settings className="w-5 h-5" />
-                </Button>
-              </div>
-
-              <div className="flex-1 flex flex-col justify-center space-y-6 mt-8">
-                {/* Header Navigation */}
-                <div className="flex items-center justify-center gap-8 mb-4">
-                  <Button variant="ghost" className="text-white/60 hover:text-white">
-                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-2">
-                      <span className="text-white text-xs">👁</span>
-                    </div>
-                  </Button>
-                  <h1 className="text-xl font-bold text-white">PLAY</h1>
-                  <Button 
-                    variant="ghost" 
-                    onClick={() => navigate("/inbox")}
-                    className="text-xl font-bold text-white/40 hover:text-white/80 p-0 h-auto"
-                  >
-                    INBOX
-                  </Button>
-                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                  <Button variant="ghost" className="text-white/60 hover:text-white">
-                    <Settings className="w-6 h-6" />
-                  </Button>
-                </div>
-
-                {/* Story Template Preview */}
-                <div className="bg-gradient-to-br from-amber-900 to-amber-700 rounded-3xl p-8 text-center relative mx-4">
-                  <div className="w-16 h-16 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <div className="w-12 h-12 bg-white/30 rounded-full flex items-center justify-center">
-                      <MessageSquare className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                  <h2 className="text-white text-xl font-bold mb-2">
-                    send me anonymous<br />messages!
-                  </h2>
-                  <div className="absolute bottom-4 right-4 w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs">🎲</span>
-                  </div>
-                  {/* Dots indicator */}
-                  <div className="flex justify-center gap-2 mt-4">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <div className="w-2 h-2 bg-white/30 rounded-full"></div>
-                    <div className="w-2 h-2 bg-white/30 rounded-full"></div>
-                  </div>
-                </div>
-
-                {/* Step 1: Copy Link */}
-                <div className="text-center space-y-4 px-4">
-                  <h3 className="text-xl font-bold text-black">
-                    Step 1: Copy your link
-                  </h3>
-                  <p className="text-gray-500 text-sm">
-                    NGL.LINK/{userProfile?.username?.toUpperCase() || user?.id?.slice(0, 8).toUpperCase()}
-                  </p>
-                  <Button 
-                    onClick={copyLink}
-                    variant="outline"
-                    className="px-8 py-3 text-base font-medium rounded-full border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white"
-                  >
-                    📎 copy link
-                  </Button>
-                </div>
-
-                {/* Step 2: Share Button */}
-                <div className="text-center space-y-4 px-4 pb-4">
-                  <h3 className="text-xl font-bold text-black">
-                    Step 2: Share link on your story
-                  </h3>
-                  <Button 
-                    onClick={shareLink}
-                    className="w-full py-4 text-xl font-bold bg-gradient-to-r from-pink-500 to-orange-500 hover:opacity-90 rounded-full text-white"
-                  >
-                    Share!
-                  </Button>
-                </div>
-              </div>
+      {/* Content */}
+      <div className="px-4 py-6 space-y-6">
+        {/* Main Card */}
+        <Card className="bg-gradient-to-br from-amber-900 to-amber-700 rounded-2xl p-8 text-center relative shadow-md">
+          <div className="w-16 h-16 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <Avatar className="w-12 h-12">
+              <AvatarFallback className="bg-gray-300 text-gray-600">
+                {userProfile?.username?.charAt(0)?.toUpperCase() || '👤'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="absolute bottom-0 right-0 w-4 h-4 bg-black rounded-full border-2 border-white flex items-center justify-center">
+              <Copy className="w-2 h-2 text-white" />
             </div>
           </div>
+          <h2 className="text-white text-xl font-bold">
+            send me anonymous<br />messages!
+          </h2>
+          <div className="absolute bottom-4 right-4 w-8 h-8 bg-black/20 rounded-full flex items-center justify-center">
+            <span className="text-white text-xs">👤</span>
+          </div>
+        </Card>
+
+        {/* Step 1: Copy Link */}
+        <div className="text-center space-y-4">
+          <h3 className="text-xl font-bold text-black">
+            Step 1: Copy your link
+          </h3>
+          <div className="bg-gray-100 rounded-full px-4 py-3 flex items-center justify-between">
+            <span className="text-gray-700 text-sm">
+              NGL.LINK/{userProfile?.username?.toUpperCase() || user?.id?.slice(0, 8).toUpperCase()}
+            </span>
+            <Copy className="w-5 h-5 text-gray-500" />
+          </div>
+          <Button 
+            onClick={copyLink}
+            variant="outline"
+            className="px-8 py-3 text-base font-medium rounded-full border-2 border-red-400 text-red-400 hover:bg-red-400 hover:text-white"
+          >
+            📎 copy link
+          </Button>
+        </div>
+
+        {/* Step 2: Share Button */}
+        <div className="text-center space-y-4">
+          <h3 className="text-xl font-bold text-black">
+            Step 2: Share link on your story
+          </h3>
+          <Button 
+            onClick={shareLink}
+            className="w-full h-12 text-xl font-bold bg-gradient-to-r from-pink-500 to-orange-500 hover:opacity-90 rounded-full text-white"
+          >
+            Share!
+          </Button>
         </div>
       </div>
 
